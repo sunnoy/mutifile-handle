@@ -1,0 +1,17 @@
+---
+# tasks file for mutifile-handle
+- name: get file paths
+  find:
+    paths: "{{ paths }}"
+    patterns: "{{ patterns }}"
+    use_regex: yes
+    recurse: yes
+  register: file_path
+
+- name: templates file
+  template:
+    variable_end_string: "UU"
+    variable_start_string: "UU"
+    src: file-tmp.j2
+    dest: "{{ item.path }}"
+  with_items: "{{ file_path.files }}"
